@@ -2,10 +2,12 @@ import { Header } from "./Header";
 import bgImg from "../assets/backgroundImage.png"
 import { useState,useRef } from "react";
 import { checkValidData } from "../utils/validate";
+import {  createUserWithEmailAndPassword,signInWithEmailAndPassword  } from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 export function LoginPage(){
     const [status,setStatus] = useState(true); 
-    const [errorMsg,serErrorMsg] = useState(null);
+    const [errorMsg,setErrorMsg] = useState(null);
     const email = useRef(null);
     const password = useRef(null);
 
@@ -15,9 +17,34 @@ export function LoginPage(){
     } 
     function HandleButtonClick(){
         // Validate Form Data
-        const msg = checkValidData(email.current.value,password.current.value)
-        serErrorMsg(msg)
-        console.log(msg);
+        setErrorMsg(checkValidData(email.current.value,password.current.value)) 
+        if (errorMsg) return ;
+        // SignUp
+        if (!status) {
+            createUserWithEmailAndPassword(auth, email.current.value,password.current.value)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log(user);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMsg(errorCode + "-" + errorMessage) 
+                });
+        }
+        // SignIn
+        else{
+            signInWithEmailAndPassword(auth, email.current.value,password.current.value)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log(user);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMsg(errorCode + "-" + errorMessage) 
+                });
+        }
     }
     return <>
         <div className="absolute inset-0 w-full h-full object-cover z-0" >

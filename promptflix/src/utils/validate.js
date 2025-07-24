@@ -8,5 +8,5 @@ export function checkValidData(email,password){
     if(!isPasswordValid){
         return "Password Invalid"
     }
-
+    return null
 }
