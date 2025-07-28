@@ -4,16 +4,21 @@ import { useState,useRef } from "react";
 import { checkValidData } from "../utils/validate";
 import {  createUserWithEmailAndPassword,signInWithEmailAndPassword  } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { updateProfile } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 export function LoginPage(){
     const [status,setStatus] = useState(true); 
     const [errorMsg,setErrorMsg] = useState(null);
+    const name = useRef(null);
     const email = useRef(null);
     const password = useRef(null);
-
+    const navigate = useNavigate(); 
+    const dispatch = useDispatch();
     function toggleSignin(){
         setStatus(!status)
-        console.log(status)
     } 
     function HandleButtonClick(){
         // Validate Form Data
@@ -24,7 +29,12 @@ export function LoginPage(){
             createUserWithEmailAndPassword(auth, email.current.value,password.current.value)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                    console.log(user);
+                    updateProfile(auth.currentUser, {
+                        displayName: name.current.value
+                      }).then(()=>{console.log(name.current.value+" "+"added");})
+                      .catch((error)=>{console.log(error);}) 
+                    const {uid,email,displayName} = user;
+                    dispatch(addUser({uid:uid,email:email,displayName:displayName}));
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -56,7 +66,7 @@ export function LoginPage(){
         <form onSubmit={(e)=>e.preventDefault()}  action="" className=" w-3/12 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 p-12 rounded-lg shadow-lg z-10 h-120 flex flex-col gap-4">
             <h2 className="text-white pt-0 mt-0" >{status? "Sign In" : "Sign Up"}</h2>
             { !status && (
-                <input type="text"  placeholder="Full Name" className="p-2 my-2 block w-full rounded bg-white text-black" />                
+                <input ref={name}    type="text"  placeholder="Full Name" className="p-2 my-2 block w-full rounded bg-white text-black" />                
                 )
             }
             <input ref={email}  type="text"  placeholder="Email Adress" className="p-2 my-2 block w-full rounded bg-grey-600 text-black" />

@@ -1,7 +1,40 @@
-import { Link } from "react-router-dom";
-import logo from "../assets/logo.png"; // adjust path as needed
+import { Link, Navigate } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {  onAuthStateChanged, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
+import logo from "../assets/logo.png"; 
+import { auth } from "../utils/firebase";
+import { useEffect } from "react";
+import { addUser, removeUser } from "../utils/userSlice";
 
 export function Header() {
+  const user = useSelector((store)=>store.user); 
+  const navigate = useNavigate();
+  const dispatch = useDispatch(); 
+  useEffect(()=>{
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const {uid,email,displayName} = user;
+          dispatch(addUser({uid:uid,email:email,displayName:displayName}));
+          navigate("/browse")
+        } else {
+            dispatch(removeUser()); 
+            navigate("/");
+        }
+      });
+      return ()=> unsubscribe();
+},[]);
+  function signinHandler(){
+    if(user){
+          signOut(auth).then(() => {
+              console.log("signout sucess");
+            }).catch((error) => {
+              console.log("signout Failed"+error);
+            });
+          }
+      navigate("/")
+  }
   return (
     <nav className="w-full h-20 px-6 py-4 flex items-center justify-between bg-black shadow-md">
       {/* Logo on the left */}
@@ -22,6 +55,9 @@ export function Header() {
         </li>
         <li>
           <Link to="/contact" className="hover:text-red-500 transition">Contact</Link>
+        </li>
+        <li>
+          <Link onClick={signinHandler}  className="font-bold hover:text-red-500 transition">{user? "Signout": ""}</Link>
         </li>
       </ul>
     </nav>
