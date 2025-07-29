@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Browse } from "./Browse";
 import { Header } from "./Header";
 import { LoginPage } from "./LoginPage";
+import PromptPage from "./PromptPage";
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../utils/firebase";
@@ -23,6 +24,10 @@ export function Body(){
         {
             path:"/login",
             element:<LoginPage/>
+        },
+        {
+            path:"/promptPage",
+            element:<PromptPage/>
         }
     ])
 

@@ -1,4 +1,4 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {  onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -12,12 +12,15 @@ export function Header() {
   const user = useSelector((store)=>store.user); 
   const navigate = useNavigate();
   const dispatch = useDispatch(); 
+  const location = useLocation();
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
           const {uid,email,displayName} = user;
           dispatch(addUser({uid:uid,email:email,displayName:displayName}));
-          navigate("/browse")
+          if(location.pathname=="/"){
+            navigate("/browse");
+          }
         } else {
             dispatch(removeUser()); 
             navigate("/");
@@ -36,7 +39,7 @@ export function Header() {
       navigate("/")
   }
   return (
-    <nav className="w-full h-20 px-6 py-4 flex items-center justify-between bg-black shadow-md">
+    <nav className="w-full h-20 px-6  flex items-center justify-between bg-black ">
       {/* Logo on the left */}
       <div className=" w-250">
         <img src={logo} alt="PromptFlix Logo" className="h-12 w-full" />
@@ -54,7 +57,7 @@ export function Header() {
           <Link to="/about" className="hover:text-red-500 transition">About</Link>
         </li>
         <li>
-          <Link to="/contact" className="hover:text-red-500 transition">Contact</Link>
+          <Link to="/promptPage" className="hover:text-red-500 transition">{user? "PromptSearch": ""}</Link>
         </li>
         <li>
           <Link onClick={signinHandler}  className="font-bold hover:text-red-500 transition">{user? "Signout": ""}</Link>

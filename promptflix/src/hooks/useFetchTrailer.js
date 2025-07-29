@@ -12,7 +12,6 @@ export default function useFetchTrailer(id,key){
         let trailer =  json.results.find(video=> video.type=="Trailer");
         trailer = trailer ? trailer : json.results[0]; 
         dispatch(addTrailerVideo(trailer))
-        console.log(trailer);
     }
     useEffect(()=>{
         getMovieTrailer()
