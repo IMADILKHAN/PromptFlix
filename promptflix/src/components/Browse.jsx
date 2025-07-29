@@ -1,18 +1,21 @@
 import { useEffect } from "react";
 import { API_OPTIONS, MOVIE_FETCH_URL } from "../utils/constants";
 import { Header } from "./Header";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNowPlayingMovies } from "../utils/movieSlice";
 import useNowPlayingMovies from "../hooks/useNowPlayingMovies";
 import MainTrailerContainer from "./MainTrailerContainer";
 import SecondaryMovieContainer from "./SecondaryMovieContainer";
+import PromptPage from "./PromptPage";
 
 export function Browse(){
-   
-   useNowPlayingMovies(); 
+   useNowPlayingMovies();
+   const searchView = useSelector((store)=>store.prompt.showSearch) 
     return <>
         <Header/>
-        <MainTrailerContainer/> 
-        <SecondaryMovieContainer/>
+        {
+            searchView? <PromptPage/> : <><MainTrailerContainer/> <SecondaryMovieContainer/></>
+        }
+        
     </>
 }
