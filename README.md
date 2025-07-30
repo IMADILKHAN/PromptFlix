@@ -42,7 +42,14 @@ PromptFlix aims to create a better content discovery experience by allowing user
 ---
 
 ## 📷 Screenshots
+## 📷 Screenshots
 
-> _Screenshots coming soon..._
 
-<!-- Paste your screenshots here -->
+![Home](./promptflix/screenshots/Screenshot%202025-07-30%20at%201.39.00%E2%80%AFPM.png)
+
+
+![Search](./promptflix/screenshots/Screenshot%202025-07-30%20at%201.39.34%E2%80%AFPM.png)
+
+
+![Trailer](./promptflix/screenshots/Screenshot%202025-07-30%20at%201.39.47%E2%80%AFPM.png)
+
