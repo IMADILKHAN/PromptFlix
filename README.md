@@ -4,7 +4,7 @@
 
 Whether you're a binge-watcher or a casual viewer, PromptFlix delivers tailored content based on your preferences and mood, making your entertainment experience more fun, engaging, and personalized.
 
-🚀 **View Demo** · [High Level Design] · [Low Level Design] · [Documentation] · [Report Bug] · [Request Feature]
+
 
 ---
 
