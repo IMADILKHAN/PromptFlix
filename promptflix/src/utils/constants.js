@@ -7,6 +7,8 @@ export const API_OPTIONS = {
   };
 
 
-export const MOVIE_FETCH_URL = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1"
+export const MOVIE_FETCH_URL = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1";
   
-export const IMAGE_CARD_URL = "https://image.tmdb.org/t/p/w780/"
+export const IMAGE_CARD_URL = "https://image.tmdb.org/t/p/w780/";
+
+export const OPEN_AI_KEY = "YOUR-KEY"; 
